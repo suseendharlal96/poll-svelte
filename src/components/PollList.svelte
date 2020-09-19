@@ -1,6 +1,8 @@
 <script>
+  import { polls } from "../store";
+  import { fade, slide, scale } from "svelte/transition";
+  import { flip } from "svelte/animate";
   import PollDetail from "./PollDetail.svelte";
-  export let polls = [];
 </script>
 
 <style>
@@ -12,7 +14,9 @@
 </style>
 
 <div class="poll-list">
-  {#each polls as poll (poll.id)}
-    <PollDetail {poll} on:castVote/>
+  {#each $polls as poll (poll.id)}
+    <div in:fade out:scale|local animate:flip={{ duration: 500 }}>
+      <PollDetail {poll} />
+    </div>
   {/each}
 </div>

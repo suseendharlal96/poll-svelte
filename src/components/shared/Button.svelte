@@ -25,6 +25,6 @@
   }
 </style>
 
-<button class={type} class:flat>
+<button class={type} class:flat on:click>
   <slot />
 </button>

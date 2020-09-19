@@ -1,11 +1,42 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import { polls } from "../store";
   import Card from "./shared/Card.svelte";
+  import Button from "./shared/Button.svelte";
+  import { tweened } from "svelte/motion";
+
   export let poll;
   $: totalVote = poll.voteA + poll.voteB;
-  $: percentA = (poll.voteA / totalVote) * 100 + "%";
-  $: percentB = (poll.voteB / totalVote) * 100 + "%";
+  $: percentA = (poll.voteA / totalVote) * 100 || 0;
+  $: percentB = (poll.voteB / totalVote) * 100 || 0;
+  const tweenA = tweened(0);
+  const tweenB = tweened(0);
+  $: tweenA.set(percentA);
+  $: tweenB.set(percentB);
+  console.log(tweenA);
+
+  const castVote = (id, option) => {
+    polls.update((currentPolls) => {
+      const pollsCopy = [...currentPolls];
+      const pollIndex = pollsCopy.findIndex((p) => p.id === id);
+      if (option === "A") {
+        pollsCopy[pollIndex].voteA++;
+      } else {
+        pollsCopy[pollIndex].voteB++;
+      }
+      return pollsCopy;
+    });
+  };
+
+  const deletePoll = (id) => {
+    console.log(id);
+    polls.update((currentPolls) => {
+      let pollsCopy = [...currentPolls];
+      console.log(pollsCopy);
+      pollsCopy = pollsCopy.filter((p) => p.id !== id);
+      console.log(pollsCopy);
+      return pollsCopy;
+    });
+  };
 </script>
 
 <style>
@@ -40,10 +71,12 @@
   .percent-a {
     border-left: 2px solid green;
     background-color: lightgreen;
+    /* transition: width 2s; */
   }
   .percent-b {
     border-left: 2px solid red;
     background-color: lightsalmon;
+    /* transition: width 2s; */
   }
 </style>
 
@@ -51,17 +84,18 @@
   <div class="poll">
     <h3>{poll.ques}</h3>
     <p>TotalVotes:{totalVote}</p>
-    <div
-      class="answer"
-      on:click={() => dispatch('castVote', { id: poll.id, voteFor: 'A' })}>
-      <div style=" width: {percentA}" class="percent percent-a" />
+    <div class="answer" on:click={() => castVote(poll.id, 'A')}>
+      <div style=" width: {$tweenA}%" class="percent percent-a" />
       <span>{poll.ansA}({poll.voteA})</span>
     </div>
-    <div
-      class="answer"
-      on:click={() => dispatch('castVote', { id: poll.id, voteFor: 'B' })}>
-      <div style=" width: {percentB}" class="percent percent-b" />
+    <div class="answer" on:click={() => castVote(poll.id, 'B')}>
+      <div style=" width: {$tweenB}%" class="percent percent-b" />
       <span>{poll.ansB}({poll.voteB})</span>
+    </div>
+    <div>
+      <Button type="secondary" on:click={() => deletePoll(poll.id)}>
+        Delete
+      </Button>
     </div>
   </div>
 </Card>

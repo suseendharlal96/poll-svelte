@@ -1,4 +1,5 @@
 <script>
+  import { polls } from "../store";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import Button from "./shared/Button.svelte";
@@ -14,7 +15,6 @@
   };
   let valid = true;
   const createPoll = () => {
-    console.log(form);
     valid = true;
     if (form.ques.trim() === "") {
       errors.ques = "Required Field";
@@ -35,8 +35,7 @@
       errors.ansB = "";
     }
     if (valid) {
-      console.log("valid");
-      const polls = {
+      const newPoll = {
         id: Math.random(),
         ques: form.ques,
         ansA: form.ansA,
@@ -44,7 +43,10 @@
         voteA: 0,
         voteB: 0,
       };
-      dispatch("createPoll", polls);
+      polls.update((currentPolls) => {
+        return [newPoll, ...currentPolls];
+      });
+      dispatch("createPoll");
     }
   };
 </script>
