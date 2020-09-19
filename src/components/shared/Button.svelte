@@ -1,7 +1,7 @@
 <script>
   export let type = "primary";
   export let flat = false;
-  export let inverse = false;
+  // export let inverse = false;
 </script>
 
 <style>

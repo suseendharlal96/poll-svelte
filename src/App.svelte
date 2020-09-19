@@ -1,14 +1,26 @@
 <script>
   import Tabs from "./components/shared/tabs.svelte";
   import PollForm from "./components/PollForm.svelte";
+  import PollList from "./components/PollList.svelte";
 
   const items = ["Current Polls", "Add New Poll"];
   let activeItem = items[1];
+  let polls = [
+    {
+      id: 1,
+      ques: "React or Angular",
+      ansA: "React",
+      ansB: "Angular",
+      voteA: 5,
+      voteB: 5,
+    },
+  ];
 
-  // const setActiveItem = (i) => {
-  //   console.log(i);
-  //   activeItem = items[i];
-  // };
+  const createPoll = ({ detail: poll }) => {
+    polls = [poll, ...polls];
+    activeItem = items[0];
+    console.log(polls);
+  };
 </script>
 
 <style>
@@ -24,8 +36,8 @@
     {activeItem}
     on:setActiveItem={({ detail }) => (activeItem = items[detail])} />
   {#if activeItem === items[0]}
-    <p>list component</p>
+    <PollList {polls} />
   {:else}
-    <PollForm />
+    <PollForm on:createPoll={createPoll} />
   {/if}
 </main>
