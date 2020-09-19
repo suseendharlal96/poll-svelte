@@ -13,6 +13,6 @@
 
 <div class="poll-list">
   {#each polls as poll (poll.id)}
-    <PollDetail {poll} />
+    <PollDetail {poll} on:castVote/>
   {/each}
 </div>

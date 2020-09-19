@@ -4,7 +4,7 @@
   import PollList from "./components/PollList.svelte";
 
   const items = ["Current Polls", "Add New Poll"];
-  let activeItem = items[1];
+  let activeItem = items[0];
   let polls = [
     {
       id: 1,
@@ -21,6 +21,18 @@
     activeItem = items[0];
     console.log(polls);
   };
+
+  const castVote = ({ detail }) => {
+    console.log(detail);
+    const pollsCopy = [...polls];
+    const pollIndex = pollsCopy.findIndex((p) => p.id === detail.id);
+    if (detail.voteFor === "A") {
+      pollsCopy[pollIndex].voteA++;
+    } else {
+      pollsCopy[pollIndex].voteB++;
+    }
+    polls = pollsCopy;
+  };
 </script>
 
 <style>
@@ -36,7 +48,7 @@
     {activeItem}
     on:setActiveItem={({ detail }) => (activeItem = items[detail])} />
   {#if activeItem === items[0]}
-    <PollList {polls} />
+    <PollList {polls} on:castVote={castVote} />
   {:else}
     <PollForm on:createPoll={createPoll} />
   {/if}

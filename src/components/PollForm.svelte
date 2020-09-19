@@ -13,7 +13,6 @@
     ansB: "",
   };
   let valid = true;
-
   const createPoll = () => {
     console.log(form);
     valid = true;
