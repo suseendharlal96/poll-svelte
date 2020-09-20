@@ -1,4 +1,8 @@
 <script>
+  import { polls } from "./store";
+  import { onMount } from "svelte";
+  import axios from "axios";
+
   import Tabs from "./components/shared/tabs.svelte";
   import PollForm from "./components/PollForm.svelte";
   import PollList from "./components/PollList.svelte";
@@ -9,6 +13,12 @@
   const createPoll = () => {
     activeItem = items[0];
   };
+
+  onMount(async () => {
+    const res = await axios.get("http://localhost:3000");
+    console.log(res.data);
+    polls.set(res.data.polls);
+  });
 </script>
 
 <style>

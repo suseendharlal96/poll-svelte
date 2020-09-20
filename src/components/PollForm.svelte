@@ -2,6 +2,8 @@
   import { polls } from "../store";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
+  import axios from "axios";
+
   import Button from "./shared/Button.svelte";
   let form = {
     ques: "",
@@ -14,7 +16,7 @@
     ansB: "",
   };
   let valid = true;
-  const createPoll = () => {
+  const createPoll = async () => {
     valid = true;
     if (form.ques.trim() === "") {
       errors.ques = "Required Field";
@@ -43,8 +45,10 @@
         voteA: 0,
         voteB: 0,
       };
+      const res = await axios.post("https://poll-app-node.herokuapp.com/create", { ...newPoll });
+      console.log(res.data.poll);
       polls.update((currentPolls) => {
-        return [newPoll, ...currentPolls];
+        return [res.data.poll, ...currentPolls];
       });
       dispatch("createPoll");
     }

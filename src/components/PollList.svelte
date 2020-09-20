@@ -14,9 +14,15 @@
 </style>
 
 <div class="poll-list">
-  {#each $polls as poll (poll.id)}
-    <div in:fade out:scale|local animate:flip={{ duration: 500 }}>
-      <PollDetail {poll} />
-    </div>
-  {/each}
+  {#if $polls && $polls.length > 0}
+    {#each $polls as poll (poll._id)}
+      <div in:fade out:scale|local animate:flip={{ duration: 500 }}>
+        <PollDetail {poll} />
+      </div>
+    {/each}
+  {:else if $polls && $polls.length === 0}
+    <p>Create a poll</p>
+  {:else}
+    <p>Loading...</p>
+  {/if}
 </div>
