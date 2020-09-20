@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import axios from "axios";
 
+  import { baseURL } from "./baseurl";
   import Tabs from "./components/shared/tabs.svelte";
   import PollForm from "./components/PollForm.svelte";
   import PollList from "./components/PollList.svelte";
@@ -15,7 +16,7 @@
   };
 
   onMount(async () => {
-    const res = await axios.get("https://poll-app-node.herokuapp.com");
+    const res = await axios.get(baseURL);
     console.log(res.data);
     polls.set(res.data.polls);
   });

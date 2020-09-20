@@ -4,6 +4,7 @@
   const dispatch = createEventDispatcher();
   import axios from "axios";
 
+  import { baseURL } from "../baseurl";
   import Button from "./shared/Button.svelte";
   let form = {
     ques: "",
@@ -45,7 +46,7 @@
         voteA: 0,
         voteB: 0,
       };
-      const res = await axios.post("https://poll-app-node.herokuapp.com/create", { ...newPoll });
+      const res = await axios.post(`${baseURL}/create`, { ...newPoll });
       console.log(res.data.poll);
       polls.update((currentPolls) => {
         return [res.data.poll, ...currentPolls];

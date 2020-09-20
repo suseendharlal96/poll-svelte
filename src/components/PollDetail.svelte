@@ -1,10 +1,11 @@
 <script>
   import { polls } from "../store";
+  import { tweened } from "svelte/motion";
   import axios from "axios";
 
+  import { baseURL } from "../baseurl";
   import Card from "./shared/Card.svelte";
   import Button from "./shared/Button.svelte";
-  import { tweened } from "svelte/motion";
 
   export let poll;
   $: totalVote = poll.voteA + poll.voteB;
@@ -18,7 +19,7 @@
   const castVote = async (id, option) => {
     await axios({
       method: "patch",
-      url: "https://poll-app-node.herokuapp.com/update",
+      url: `${baseURL}/update`,
       data: { id, voteFor: option },
     });
     polls.update((currentPolls) => {
@@ -37,7 +38,7 @@
     console.log(id);
     await axios({
       method: "delete",
-      url: "https://poll-app-node.herokuapp.com/delete",
+      url: `${baseURL}/delete`,
       data: { id: id },
     });
     polls.update((currentPolls) => {
