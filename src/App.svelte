@@ -15,7 +15,7 @@
   };
 
   onMount(async () => {
-    const res = await axios.get("http://localhost:3000");
+    const res = await axios.get("https://poll-app-node.herokuapp.com");
     console.log(res.data);
     polls.set(res.data.polls);
   });
