@@ -1,1 +1,1 @@
-export const baseURL = "https://poll-app-node.herokuapp.com/";
+export const baseURL = "https://poll-app-node.herokuapp.com";

@@ -16,7 +16,7 @@
   };
 
   onMount(async () => {
-    const res = await axios.get(baseURL);
+    const res = await axios.get(`${baseURL}/`);
     console.log(res.data);
     polls.set(res.data.polls);
   });
